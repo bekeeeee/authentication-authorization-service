@@ -1,10 +1,7 @@
-import { Router, Response, Request } from "express";
-import { body } from "express-validator"; // body is a middleware for error handling
+import { Response, Request } from "express";
 import jwt from "jsonwebtoken";
-// import { BadRequestError, validateRequet } from "sgticketsbekeeeee";
 
-// import { BadRequestError } from "../../controller/error/bad-request-error";
-// import { validateRequet } from "../../middlewares/validate-request";
+import { BadRequestError } from "../errors/bad-request-error";
 
 import { User } from "../models/UserModel";
 
@@ -17,12 +14,12 @@ const signup = async (req: Request, res: Response) => {
 
   if (existingEmail) {
     // console.log("Email in use");
-    // throw new BadRequestError("Email in use");
+    throw new BadRequestError("Email in use");
   }
 
   if (existingUsername) {
     // console.log("Username in use");
-    // throw new BadRequestError("Username in use");
+    throw new BadRequestError("Username in use");
   }
 
   const user = User.build({ email, password, username });
@@ -36,8 +33,7 @@ const signup = async (req: Request, res: Response) => {
       username: user.username,
       role: user.role,
     },
-    //   process.env.JWT_KEY!,
-    "asdsds",
+    process.env.JWT_KEY!,
     {
       expiresIn: 55 * 252 * 5452 * 5254,
     }
