@@ -4,6 +4,7 @@ import cookieSession from "cookie-session";
 import { json } from "body-parser";
 import cors from "cors";
 import { userRouter } from "./routes/userRoutes";
+import { errorHandler } from "./middlewares/error-handler";
 
 const app = Express();
 
@@ -19,4 +20,5 @@ app.use(
 );
 app.use("/api/v1/users", userRouter);
 
+app.use(errorHandler);
 export { app };
