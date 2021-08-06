@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { body } from "express-validator"; // body is a middleware for error handling
 import { validateRequet } from "../middlewares/validate-request";
-import { signup,signin } from "../controller/authController";
+import { signup, signin, currentUser } from "../controller/authController";
+import { currentUserMiddleware } from "../middlewares/current-user";
 
 const router = Router();
 
@@ -23,17 +24,17 @@ router.post(
 );
 
 router.post(
-    "/signin",
-    [
-      body("email").isEmail().withMessage("Email must be valid"),
-      body("password")
-        .trim()
-        .isLength({ min: 4, max: 20 })
-        .withMessage("Password must be between 4 an 20 characters"),
+  "/signin",
+  [
+    body("email").isEmail().withMessage("Email must be valid"),
+    body("password")
+      .trim()
+      .isLength({ min: 4, max: 20 })
+      .withMessage("Password must be between 4 an 20 characters"),
+  ],
+  validateRequet,
+  signin
+);
 
-    ],
-    validateRequet,
-    signin
-  );
-
+router.get("/currentUser", currentUserMiddleware, currentUser);
 export { router as userRouter };

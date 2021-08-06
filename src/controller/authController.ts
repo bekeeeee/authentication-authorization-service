@@ -83,4 +83,8 @@ const signin = async (req: Request, res: Response) => {
   res.status(200).send({ existingUser });
 };
 
-export { signup, signin };
+ const currentUser = (req: Request, res: Response) => {
+  res.send({ currentUser: req.currentUser || null });
+};
+
+export { signup, signin, currentUser };
