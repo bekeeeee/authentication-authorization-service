@@ -84,7 +84,7 @@ const signin = catchAsync(async (req: Request, res: Response) => {
   res.status(200).send({ existingUser });
 });
 
-const currentUser = catchAsync((req: Request, res: Response) => {
+const currentUser = catchAsync(async (req: Request, res: Response) => {
   res.send({ currentUser: req.currentUser || null });
 });
 
