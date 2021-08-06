@@ -36,8 +36,8 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
   await user.save();
 
   // Generate JWT
-  const userJwt = signToken({
-    id: user.id,
+  const userJwt = await signToken({
+    id: user._id,
     username: user.username,
     role: user.role,
   });
@@ -47,7 +47,6 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
     jwt: userJwt,
   };
   user.password = "";
-
   res.status(201).send({ user, userJwt });
 };
 

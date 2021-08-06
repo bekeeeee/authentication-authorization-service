@@ -3,9 +3,8 @@ import mongoose from "mongoose";
 
 let mongo: any;
 beforeAll(async () => {
-  console.log("beforeAll");
-  mongo = new MongoMemoryServer();
-  const mongoUri = await mongo.getUri();
+  mongo = await MongoMemoryServer.create();
+  const mongoUri = mongo.getUri();
   await mongoose.connect(mongoUri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -13,8 +12,8 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-  console.log("beforeEach");
-  process.env.JWT_KEY = "asdf";
+  process.env.JWT_SECRET = "asdf";
+  process.env.JWT_EXPIRES_IN = "322454545";
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
   const collections = await mongoose.connection.db.collections();
@@ -23,10 +22,7 @@ beforeEach(async () => {
   }
 });
 
-
 afterAll(async () => {
-  console.log("afterAll");
   await mongo.stop();
   await mongoose.connection.close();
 });
-
