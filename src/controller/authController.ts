@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 import { BadRequestError } from "../errors/bad-request-error";
 import { Password } from "../services/passwordHandler";
-
+import { catchAsync } from "../services/catchAsync";
 import { User } from "../models/UserModel";
 
 interface jwtData {
@@ -17,40 +17,42 @@ const signToken = (data: jwtData) => {
   });
 };
 
-const signup = async (req: Request, res: Response, next: NextFunction) => {
-  console.log("Creating a user...");
+const signup = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    console.log("Creating a user...");
 
-  const { email, password, username } = req.body;
-  const existingEmail = await User.findOne({ email });
-  const existingUsername = await User.findOne({ username });
+    const { email, password, username } = req.body;
+    const existingEmail = await User.findOne({ email });
+    const existingUsername = await User.findOne({ username });
 
-  if (existingEmail) {
-    throw new BadRequestError("Email in use");
+    if (existingEmail) {
+      throw new BadRequestError("Email in use");
+    }
+
+    if (existingUsername) {
+      throw new BadRequestError("Username in use");
+    }
+
+    const user = User.build({ email, password, username });
+    await user.save();
+
+    // Generate JWT
+    const userJwt = await signToken({
+      id: user._id,
+      username: user.username,
+      role: user.role,
+    });
+
+    // store it on a seesion
+    req.session = {
+      jwt: userJwt,
+    };
+    user.password = "";
+    res.status(201).send({ user, userJwt });
   }
+);
 
-  if (existingUsername) {
-    throw new BadRequestError("Username in use");
-  }
-
-  const user = User.build({ email, password, username });
-  await user.save();
-
-  // Generate JWT
-  const userJwt = await signToken({
-    id: user._id,
-    username: user.username,
-    role: user.role,
-  });
-
-  // store it on a seesion
-  req.session = {
-    jwt: userJwt,
-  };
-  user.password = "";
-  res.status(201).send({ user, userJwt });
-};
-
-const signin = async (req: Request, res: Response) => {
+const signin = catchAsync(async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const existingUser = await User.findOne({ email }).select("+password");
   if (!existingUser) {
@@ -80,14 +82,14 @@ const signin = async (req: Request, res: Response) => {
 
   existingUser.password = "";
   res.status(200).send({ existingUser });
-};
+});
 
-const currentUser = (req: Request, res: Response) => {
+const currentUser = catchAsync((req: Request, res: Response) => {
   res.send({ currentUser: req.currentUser || null });
-};
+});
 
-const signout = async (req: Request, res: Response) => {
+const signout = catchAsync(async (req: Request, res: Response) => {
   req.session = null;
   res.status(200).json({ status: "success" });
-};
+});
 export { signup, signin, currentUser, signout };
