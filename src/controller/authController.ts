@@ -47,7 +47,7 @@ const signup = catchAsync(
       jwt: userJwt,
     };
     user.password = "";
-    res.status(201).send({ user, userJwt });
+    res.status(201).json({ user, userJwt });
   }
 );
 
@@ -79,11 +79,11 @@ const signin = catchAsync(async (req: Request, res: Response) => {
   };
 
   existingUser.password = "";
-  res.status(200).send({ existingUser });
+  res.status(200).json({ existingUser });
 });
 
 const currentUser = catchAsync(async (req: Request, res: Response) => {
-  res.send({ currentUser: req.currentUser || null });
+  res.json({ currentUser: req.currentUser || null });
 });
 
 const signout = catchAsync(async (req: Request, res: Response) => {
