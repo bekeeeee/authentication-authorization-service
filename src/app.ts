@@ -4,8 +4,10 @@ import "express-async-errors";
 import { json } from "body-parser";
 import cors from "cors";
 import { userRouter } from "./routes/userRoutes";
+import { postRouter } from "./routes/postRoutes";
 import { errorHandler } from "./middlewares/error-handler";
 import { NotFoundError } from "./errors/not-found-error";
+import { currentUserMiddleware } from "./middlewares/current-user";
 
 const app = Express();
 
@@ -20,6 +22,7 @@ app.use(
   })
 );
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/post", currentUserMiddleware, postRouter);
 
 app.all("*", async (req: Request, res: Response, next: NextFunction) => {
   next(new NotFoundError());

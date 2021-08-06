@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { NotAuthenticated } from "../errors/not-authenticated-error";
 
 interface UserPayload {
   id: string;
@@ -21,7 +22,7 @@ export const currentUserMiddleware = async (
   next: NextFunction
 ) => {
   if (!req.session?.jwt) {
-    return res.send({ currentUser: null });
+    throw new NotAuthenticated();
   }
   try {
     const payload = jwt.verify(
