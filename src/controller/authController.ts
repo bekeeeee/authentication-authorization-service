@@ -1,24 +1,34 @@
-import { Response, Request } from "express";
+import { Response, Request, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
 import { BadRequestError } from "../errors/bad-request-error";
+import { Password } from "../services/passwordHandler";
 
 import { User } from "../models/UserModel";
 
-const signup = async (req: Request, res: Response) => {
-  const { email, password, username } = req.body;
+interface jwtData {
+  id: string;
+  username: string;
+  role: string;
+}
+const signToken = (data: jwtData) => {
+  return jwt.sign({ ...data }, process.env.JWT_SECRET!, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  });
+};
 
+const signup = async (req: Request, res: Response, next: NextFunction) => {
   console.log("Creating a user...");
+
+  const { email, password, username } = req.body;
   const existingEmail = await User.findOne({ email });
   const existingUsername = await User.findOne({ username });
 
   if (existingEmail) {
-    // console.log("Email in use");
     throw new BadRequestError("Email in use");
   }
 
   if (existingUsername) {
-    // console.log("Username in use");
     throw new BadRequestError("Username in use");
   }
 
@@ -26,28 +36,51 @@ const signup = async (req: Request, res: Response) => {
   await user.save();
 
   // Generate JWT
+  const userJwt = signToken({
+    id: user.id,
+    username: user.username,
+    role: user.role,
+  });
 
-  const userJwt = jwt.sign(
-    {
-      id: user.id,
-      username: user.username,
-      role: user.role,
-    },
-    process.env.JWT_KEY!,
-    {
-      expiresIn: 55 * 252 * 5452 * 5254,
-    }
-  );
-
-  // console.log("cookie", res.cookies.jwt);
   // store it on a seesion
   req.session = {
     jwt: userJwt,
   };
-  user.password = " ";
-  // console.log("cookie", res.cookies.jwt);
+  user.password = "";
 
   res.status(201).send({ user, userJwt });
 };
 
-export { signup };
+const signin = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  const existingUser = await User.findOne({ email }).select("+password");
+  if (!existingUser) {
+    throw new BadRequestError("Invalid credentials");
+  }
+  console.log("sigin ...");
+
+  const passwordsMatch = await Password.compare(
+    existingUser.password,
+    password
+  );
+
+  if (!passwordsMatch) {
+    throw new BadRequestError("Invalid credentials");
+  }
+  // Generate JWT
+
+  const userJwt = signToken({
+    id: existingUser.id,
+    username: existingUser.username,
+    role: existingUser.role,
+  });
+  // store it on a seesion
+  req.session = {
+    jwt: userJwt,
+  };
+
+  existingUser.password = "";
+  res.status(200).send({ existingUser });
+};
+
+export { signup, signin };

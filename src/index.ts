@@ -5,7 +5,6 @@ import { app } from "./app";
 dotenv.config({ path: __dirname + "/.env" });
 
 const start = async () => {
-  console.log("port", process.env.port);
   const port = process.env.PORT || 3000;
   try {
     await mongoose
@@ -21,7 +20,7 @@ const start = async () => {
       console.log(`Listenin on port ${port}`);
     });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
   }
 };
 start();

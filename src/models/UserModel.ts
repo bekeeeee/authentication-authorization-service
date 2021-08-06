@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
+import { Password } from "../services/passwordHandler";
 
 // An interface that describes the properties
 // that are required to create a new User
@@ -13,6 +13,10 @@ interface UserAttrs {
 // that a User Model has
 interface UserModel extends mongoose.Model<UserDoc> {
   build(any: UserAttrs): UserDoc;
+  correctPassword(
+    candidatePassword: string,
+    userPassword: string
+  ): Promise<boolean>;
 }
 // An interface that describes the properties
 // that a User Document has
@@ -50,7 +54,7 @@ userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
   // Hash the password with cost of 12
-  const hashedPassword = await bcrypt.hash(this.get("password"), 12);
+  const hashedPassword = await Password.toHash(this.get("password"));
   this.set("password", hashedPassword);
 
   next();
