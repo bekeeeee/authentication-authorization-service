@@ -19,7 +19,6 @@ const signToken = (data: jwtData) => {
 
 const signup = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log("Creating a user...");
 
     const { email, password, username } = req.body;
     const existingEmail = await User.findOne({ email });
@@ -58,7 +57,6 @@ const signin = catchAsync(async (req: Request, res: Response) => {
   if (!existingUser) {
     throw new BadRequestError("Invalid credentials");
   }
-  console.log("sigin ...");
 
   const passwordsMatch = await Password.compare(
     existingUser.password,

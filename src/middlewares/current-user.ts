@@ -20,11 +20,7 @@ export const currentUserMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("currentuser middleware");
-
   if (!req.session?.jwt) {
-    console.log("not session");
-
     return res.send({ currentUser: null });
   }
   try {
@@ -33,7 +29,6 @@ export const currentUserMiddleware = async (
       process.env.JWT_SECRET!
     ) as UserPayload;
 
-    console.log("payload", payload);
     req.currentUser = payload;
   } catch (err) {
     console.log("err", err);
