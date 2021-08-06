@@ -1,7 +1,12 @@
 import { Router } from "express";
 import { body } from "express-validator"; // body is a middleware for error handling
 import { validateRequet } from "../middlewares/validate-request";
-import { signup, signin, currentUser } from "../controller/authController";
+import {
+  signup,
+  signin,
+  currentUser,
+  signout,
+} from "../controller/authController";
 import { currentUserMiddleware } from "../middlewares/current-user";
 
 const router = Router();
@@ -37,4 +42,6 @@ router.post(
 );
 
 router.get("/currentUser", currentUserMiddleware, currentUser);
+router.get("/signout", signout);
+
 export { router as userRouter };
