@@ -3,7 +3,7 @@ import { app } from "../../../app";
 import { getCookie } from "../../../test/getCookie";
 
 it("responds with details about the current user", async () => {
-  const cookie = await getCookie();
+  const cookie = await getCookie(1);
   //   console.log(authResponse.get("Set-Cookie"));
 
   const response = await request(app)

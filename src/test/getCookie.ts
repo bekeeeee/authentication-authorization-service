@@ -1,9 +1,9 @@
 import request from "supertest";
 import { app } from "../app";
 
-export const getCookie = async () => {
-  const email = "test@test.com";
-  const username = "test";
+export const getCookie = async (n: number) => {
+  const email = n === 1 ? "test@test.com" : "test2@test.com";
+  const username = n === 1 ? "test" : "test2";
   const password = "password";
 
   const response = await request(app)

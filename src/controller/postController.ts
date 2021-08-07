@@ -16,17 +16,17 @@ export const createPost = catchAsync(async (req: Request, res: Response) => {
 export const updatePost = catchAsync(async (req: Request, res: Response) => {
   console.log("Update post...");
   const { title, text } = req.body;
-  let post = await Post.findById(req.params.id);
+  let post = await Post.findById(req.params.id).catch((err) =>
+    console.log("err", err)
+  );
+  if (!post) {
+    throw new BadRequestError("Post not found");
+  }
   const userId = req.currentUser?.id;
-  console.log("userId", userId);
-  console.log("post", post?.userId);
 
   if (userId != post?.userId) {
-    console.log("Not authorized");
-
     throw new NotAuthorizedError();
   }
-  console.log("postId", req.params.id);
   // const existPost = await Post.findById(req.params.id);
   post = await Post.findByIdAndUpdate(
     req.params.id,
@@ -37,22 +37,18 @@ export const updatePost = catchAsync(async (req: Request, res: Response) => {
     }
   );
 
-  res.status(201).json({ post });
+  res.status(200).json({ post });
 });
 
 export const deletePost = catchAsync(async (req: Request, res: Response) => {
   console.log("Deleting a post...");
-  console.log("currentUser", req.currentUser);
   let post = await Post.findById(req.params.id);
   if (!post) {
     throw new BadRequestError("Post not found");
   }
   const userId = req.currentUser?.id;
-  console.log("userId", userId);
-  console.log("postOwner", post?.userId);
 
   if (userId == post?.userId || req.currentUser?.role === "admin") {
-    console.log("postId", req.params.id);
     post = await Post.findByIdAndDelete(req.params.id);
 
     res.status(201).json({ post });
