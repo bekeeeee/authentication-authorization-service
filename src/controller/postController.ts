@@ -16,9 +16,7 @@ export const createPost = catchAsync(async (req: Request, res: Response) => {
 export const updatePost = catchAsync(async (req: Request, res: Response) => {
   console.log("Update post...");
   const { title, text } = req.body;
-  let post = await Post.findById(req.params.id).catch((err) =>
-    console.log("err", err)
-  );
+  let post = await Post.findById(req.params.id);
   if (!post) {
     throw new BadRequestError("Post not found");
   }
