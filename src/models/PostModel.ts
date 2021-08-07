@@ -43,14 +43,6 @@ postSchema.statics.build = (attrs: PostAttrs) => {
   return new Post(attrs);
 };
 
-// postSchema.post("save", async function () {
-//   console.log("post save postModel");
-//   const user = await User.findById(this.get("userId"));
-//   if (user) {
-//     user.posts.push(this._id);
-//     await user.save();
-//   }
-// });
 
 const Post = mongoose.model<PostDoc, PostModel>("Post", postSchema);
 export { Post };

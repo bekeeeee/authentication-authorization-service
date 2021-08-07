@@ -14,7 +14,6 @@ export const createPost = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const updatePost = catchAsync(async (req: Request, res: Response) => {
-  console.log("Update post...");
   const { title, text } = req.body;
   let post = await Post.findById(req.params.id);
   if (!post) {
@@ -39,7 +38,6 @@ export const updatePost = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const deletePost = catchAsync(async (req: Request, res: Response) => {
-  console.log("Deleting a post...");
   let post = await Post.findById(req.params.id);
   if (!post) {
     throw new BadRequestError("Post not found");
@@ -56,7 +54,6 @@ export const deletePost = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const getPosts = catchAsync(async (req: Request, res: Response) => {
-  console.log("getPosts");
   const posts = await Post.find();
   res.status(200).json({ posts });
 });

@@ -3,8 +3,6 @@ import { app } from "../../../app";
 import { getCookie } from "../../../test/getCookie";
 
 it("responds with details about the current user", async () => {
-  // const cookie = await getCookie("user");
-  //   console.log(authResponse.get("Set-Cookie"));
   const responseSignup = await request(app)
     .post("/api/v1/user/signup")
     .send({
