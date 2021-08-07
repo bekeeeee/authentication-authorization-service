@@ -7,7 +7,7 @@ it("can only be accessed if the user is signed in", async () => {
 });
 
 it("returns a status other than 401 if the user is signed in", async () => {
-  const cookie = await getCookie(1);
+  const cookie = await getCookie("user");
   const response = await request(app)
     .post("/api/v1/post")
     .set("Cookie", cookie)
@@ -17,7 +17,7 @@ it("returns a status other than 401 if the user is signed in", async () => {
 });
 
 it("returns an error if an invalid title is provided", async () => {
-  const cookie = await getCookie(1);
+  const cookie = await getCookie("user");
 
   await request(app)
     .post("/api/v1/post")
@@ -38,7 +38,7 @@ it("returns an error if an invalid title is provided", async () => {
 });
 
 it("returns an error if an invalid text is provided", async () => {
-  const cookie = await getCookie(1);
+  const cookie = await getCookie("user");
 
   await request(app)
     .post("/api/v1/post")
@@ -59,7 +59,7 @@ it("returns an error if an invalid text is provided", async () => {
 });
 
 it("creates a ticket with valid inputs", async () => {
-  const cookie = await getCookie(1);
+  const cookie = await getCookie("user");
 
   let posts = await Post.find({});
   expect(posts.length).toEqual(0);

@@ -3,9 +3,19 @@ import { app } from "../../../app";
 import { getCookie } from "../../../test/getCookie";
 
 it("responds with details about the current user", async () => {
-  const cookie = await getCookie(1);
+  // const cookie = await getCookie("user");
   //   console.log(authResponse.get("Set-Cookie"));
+  const responseSignup = await request(app)
+    .post("/api/v1/user/signup")
+    .send({
+      email: "test@test.com",
+      username: "test",
+      password: "password",
+      role:"user"
+    })
+    .expect(201);
 
+  const cookie = responseSignup.get("Set-Cookie");
   const response = await request(app)
     .get("/api/v1/user/currentUser")
     .set("Cookie", cookie)

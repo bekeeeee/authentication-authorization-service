@@ -23,6 +23,7 @@ router.post(
       .trim()
       .isLength({ min: 4, max: 20 })
       .withMessage("Username must be between 4 an 20 characters"),
+    body("role").trim().isIn(["admin", "user"]).withMessage("Invalid role"),
   ],
   validateRequet,
   signup

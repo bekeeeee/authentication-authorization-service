@@ -1,10 +1,11 @@
 import request from "supertest";
 import { app } from "../app";
+import faker from "faker";
 
-export const getCookie = async (n: number) => {
-  const email = n === 1 ? "test@test.com" : "test2@test.com";
-  const username = n === 1 ? "test" : "test2";
-  const password = "password";
+export const getCookie = async (role: string) => {
+  const email = faker.internet.email();
+  const username = faker.internet.userName();
+  const password = faker.internet.password();
 
   const response = await request(app)
     .post("/api/v1/user/signup")
@@ -12,6 +13,7 @@ export const getCookie = async (n: number) => {
       email,
       username,
       password,
+      role,
     })
     .expect(201);
 

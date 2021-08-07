@@ -8,6 +8,7 @@ it("return a 200 successful signin", async () => {
       email: "test@test.com",
       username: "test",
       password: "password",
+      role:"user"
     })
     .expect(201);
 
@@ -27,6 +28,7 @@ it("fails when an incorrect password is supplied", async () => {
       email: "test@test.com",
       username: "test",
       password: "password",
+      role:"user"
     })
     .expect(201);
   await request(app)
@@ -45,6 +47,8 @@ it("fails when an incorrect email is supplied", async () => {
       email: "test@test.com",
       username: "test",
       password: "password",
+      role:"user"
+
     })
     .expect(201);
   await request(app)
@@ -63,6 +67,8 @@ it("return a 200 successful signin", async () => {
       email: "test@test.com",
       username: "test",
       password: "password",
+      role:"user"
+
     })
     .expect(201);
 

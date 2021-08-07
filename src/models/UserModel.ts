@@ -7,6 +7,7 @@ interface UserAttrs {
   email: string;
   username: string;
   password: string;
+  role?: string;
 }
 
 // An interface that describes the properties

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 import { app } from "../../../app";
 import { getCookie } from "../../../test/getCookie";
-import { Post } from "../../../models/PostModel";
+import { createPostTest } from "../../../test/createPost";
 it("can only be accessed if the user is signed in", async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
 
@@ -11,7 +11,7 @@ it("can only be accessed if the user is signed in", async () => {
 });
 
 it("returns a 400 if the provided id does not exist", async () => {
-  const cookie = await getCookie(1);
+  const cookie = await getCookie("user");
   const id = new mongoose.Types.ObjectId().toHexString();
   await request(app)
     .patch(`/api/v1/post/${id}`)
@@ -34,17 +34,11 @@ it("returns a 401 if the user is not authenticated", async () => {
     .expect(401);
 });
 
-it("returns a 401 if the user does not own the ticket", async () => {
-  const cookie = await getCookie(1);
-  const cookie_2 = await getCookie(2);
+it("returns a 401 if the user does not own the post", async () => {
+  const cookie = await getCookie("user");
+  const cookie_2 = await getCookie("user");
+  const response = await createPostTest(cookie);
 
-  const response = await request(app)
-    .post("/api/v1/post")
-    .set("Cookie", cookie)
-    .send({
-      title: "test",
-      text: "test",
-    });
   await request(app)
     .patch(`/api/v1/post/${response.body.post._id}`)
     .set("Cookie", cookie_2)
@@ -56,15 +50,9 @@ it("returns a 401 if the user does not own the ticket", async () => {
 });
 
 it("returns a 400 if the user provides an invalid title or price", async () => {
-  const cookie = await getCookie(1);
+  const cookie = await getCookie("user");
 
-  const response = await request(app)
-    .post("/api/v1/post")
-    .set("Cookie", cookie)
-    .send({
-      title: "test",
-      text: "test",
-    });
+  const response = await createPostTest(cookie);
 
   await request(app)
     .patch(`/api/v1/post/${response.body.post._id}`)
@@ -85,16 +73,10 @@ it("returns a 400 if the user provides an invalid title or price", async () => {
     .expect(400);
 });
 
-it("updates the ticket provided valid inputs", async () => {
-  const cookie = await getCookie(1);
+it("updates the post provided valid inputs", async () => {
+  const cookie = await getCookie("user");
 
-  const response = await request(app)
-    .post("/api/v1/post")
-    .set("Cookie", cookie)
-    .send({
-      title: "test",
-      text: "test",
-    });
+  const response = await createPostTest(cookie);
 
   await request(app)
     .patch(`/api/v1/post/${response.body.post._id}`)

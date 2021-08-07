@@ -49,7 +49,7 @@ export const deletePost = catchAsync(async (req: Request, res: Response) => {
   if (userId == post?.userId || req.currentUser?.role === "admin") {
     post = await Post.findByIdAndDelete(req.params.id);
 
-    res.status(201).json({ post });
+    res.status(201).json({ status: "success", post });
   } else {
     throw new NotAuthorizedError();
   }

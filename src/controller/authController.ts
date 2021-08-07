@@ -19,8 +19,7 @@ const signToken = (data: jwtData) => {
 
 const signup = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-
-    const { email, password, username } = req.body;
+    const { email, password, username, role } = req.body;
     const existingEmail = await User.findOne({ email });
     const existingUsername = await User.findOne({ username });
 
@@ -32,7 +31,7 @@ const signup = catchAsync(
       throw new BadRequestError("Username in use");
     }
 
-    const user = User.build({ email, password, username });
+    const user = User.build({ email, password, username, role });
     await user.save();
 
     // Generate JWT
