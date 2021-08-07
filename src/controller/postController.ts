@@ -5,16 +5,16 @@ import { BadRequestError } from "../errors/bad-request-error";
 import { catchAsync } from "../services/catchAsync";
 
 export const createPost = catchAsync(async (req: Request, res: Response) => {
-  const { title, text } = req.body;
+  const { text } = req.body;
   const userId = req.currentUser?.id;
-  const post = Post.build({ title, text, userId });
+  const post = Post.build({ text, userId });
   await post.save();
 
   res.status(201).json({ post });
 });
 
 export const updatePost = catchAsync(async (req: Request, res: Response) => {
-  const { title, text } = req.body;
+  const { text } = req.body;
   let post = await Post.findById(req.params.id);
   if (!post) {
     throw new BadRequestError("Post not found");
@@ -27,7 +27,7 @@ export const updatePost = catchAsync(async (req: Request, res: Response) => {
   // const existPost = await Post.findById(req.params.id);
   post = await Post.findByIdAndUpdate(
     req.params.id,
-    { text, title },
+    { text },
     {
       new: true,
       runValidators: true,

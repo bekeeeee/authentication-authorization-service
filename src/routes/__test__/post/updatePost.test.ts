@@ -17,7 +17,6 @@ it("returns a 400 if the provided id does not exist", async () => {
     .patch(`/api/v1/post/${id}`)
     .set("Cookie", cookie)
     .send({
-      title: "test",
       text: "test",
     })
     .expect(400);
@@ -28,7 +27,6 @@ it("returns a 401 if the user is not authenticated", async () => {
   await request(app)
     .patch(`/api/v1/post/${id}`)
     .send({
-      title: "test",
       text: "test",
     })
     .expect(401);
@@ -38,18 +36,17 @@ it("returns a 401 if the user does not own the post", async () => {
   const cookie = await getCookie("user");
   const cookie_2 = await getCookie("user");
   const response = await createPostTest(cookie);
-
+  
   await request(app)
     .patch(`/api/v1/post/${response.body.post._id}`)
     .set("Cookie", cookie_2)
     .send({
-      title: "updated",
       text: "updated",
     })
     .expect(401);
 });
 
-it("returns a 400 if the user provides an invalid title or price", async () => {
+it("returns a 400 if the user provides an invalid text ", async () => {
   const cookie = await getCookie("user");
 
   const response = await createPostTest(cookie);
@@ -58,8 +55,7 @@ it("returns a 400 if the user provides an invalid title or price", async () => {
     .patch(`/api/v1/post/${response.body.post._id}`)
     .set("Cookie", cookie)
     .send({
-      title: "",
-      text: "test",
+      text: "",
     })
     .expect(400);
 
@@ -67,8 +63,6 @@ it("returns a 400 if the user provides an invalid title or price", async () => {
     .patch(`/api/v1/post/${response.body.post._id}`)
     .set("Cookie", cookie)
     .send({
-      title: "test",
-      text: "",
     })
     .expect(400);
 });
@@ -82,7 +76,6 @@ it("updates the post provided valid inputs", async () => {
     .patch(`/api/v1/post/${response.body.post._id}`)
     .set("Cookie", cookie)
     .send({
-      title: "updated",
       text: "updated",
     })
     .expect(200);
@@ -91,7 +84,6 @@ it("updates the post provided valid inputs", async () => {
     .patch(`/api/v1/post/${response.body.post._id}`)
     .set("Cookie", cookie)
     .send({
-      title: "updated",
       text: "updated",
     })
     .expect(200);

@@ -3,7 +3,6 @@ import { UserDoc, User } from "./UserModel";
 // An interface that describes the properties
 // that are required to create a new Post
 interface PostAttrs {
-  title: string;
   text: string;
   userId: UserDoc["_id"];
 }
@@ -18,16 +17,12 @@ interface PostModel extends mongoose.Model<PostDoc> {
 // An interface that describes the properties
 // that a Post Document has
 export interface PostDoc extends mongoose.Document {
-  title: string;
   text: string;
   userId: UserDoc["_id"];
 }
 
 const postSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
+
   text: {
     type: String,
     required: true,

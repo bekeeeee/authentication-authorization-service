@@ -16,26 +16,7 @@ it("returns a status other than 401 if the user is signed in", async () => {
   expect(response.status).not.toEqual(401);
 });
 
-it("returns an error if an invalid title is provided", async () => {
-  const cookie = await getCookie("user");
 
-  await request(app)
-    .post("/api/v1/post")
-    .set("Cookie", cookie)
-    .send({
-      title: "",
-      text: "test text",
-    })
-    .expect(400);
-
-  await request(app)
-    .post("/api/v1/post")
-    .set("Cookie", cookie)
-    .send({
-      text: "test text",
-    })
-    .expect(400);
-});
 
 it("returns an error if an invalid text is provided", async () => {
   const cookie = await getCookie("user");
@@ -44,7 +25,6 @@ it("returns an error if an invalid text is provided", async () => {
     .post("/api/v1/post")
     .set("Cookie", cookie)
     .send({
-      title: "test title",
       text: "",
     })
     .expect(400);
@@ -53,7 +33,6 @@ it("returns an error if an invalid text is provided", async () => {
     .post("/api/v1/post")
     .set("Cookie", cookie)
     .send({
-      title: "title text",
     })
     .expect(400);
 });
@@ -64,19 +43,16 @@ it("creates a ticket with valid inputs", async () => {
   let posts = await Post.find({});
   expect(posts.length).toEqual(0);
 
-  const title = "asldkfj";
 
   await request(app)
     .post("/api/v1/post")
     .set("Cookie", cookie)
     .send({
-      title: "test title",
       text: "test text",
     })
     .expect(201);
 
   posts = await Post.find({});
   expect(posts.length).toEqual(1);
-  expect(posts[0].title).toEqual("test title");
   expect(posts[0].text).toEqual("test text");
 });

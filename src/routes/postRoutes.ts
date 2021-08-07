@@ -12,10 +12,6 @@ router.get("/", getPosts);
 router.post(
   "/",
   [
-    body("title")
-      .trim()
-      .isLength({ min: 4, max: 20 })
-      .withMessage("Title must be between 4 an 20 characters"),
     body("text")
       .trim()
       .isLength({ min: 4, max: 20 })
@@ -28,10 +24,6 @@ router.post(
 router.patch(
   "/:id",
   [
-    body("title")
-      .trim()
-      .isLength({ min: 4, max: 20 })
-      .withMessage("Title must be between 4 an 20 characters"),
     body("text")
       .trim()
       .isLength({ min: 4, max: 20 })
