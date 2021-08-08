@@ -4,7 +4,7 @@ import { UserDoc, User } from "./UserModel";
 // that are required to create a new Post
 interface PostAttrs {
   text: string;
-  userId: UserDoc["_id"];
+  user: UserDoc["_id"];
 }
 
 // An interface that describes the properties
@@ -18,26 +18,36 @@ interface PostModel extends mongoose.Model<PostDoc> {
 // that a Post Document has
 export interface PostDoc extends mongoose.Document {
   text: string;
-  userId: UserDoc["_id"];
+  user: UserDoc["_id"];
+  createdAt: Date;
 }
 
 const postSchema = new mongoose.Schema({
-
   text: {
     type: String,
     required: true,
   },
 
-  userId: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+  },
 });
-
+postSchema.pre("find", function (next) {
+  console.log("populate");
+  this.populate({
+    path: "user",
+    select: "username _id",
+  });
+  next();
+});
 postSchema.statics.build = (attrs: PostAttrs) => {
   return new Post(attrs);
 };
-
 
 const Post = mongoose.model<PostDoc, PostModel>("Post", postSchema);
 export { Post };

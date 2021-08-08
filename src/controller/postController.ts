@@ -6,8 +6,8 @@ import { catchAsync } from "../services/catchAsync";
 
 export const createPost = catchAsync(async (req: Request, res: Response) => {
   const { text } = req.body;
-  const userId = req.currentUser?.id;
-  const post = Post.build({ text, userId });
+  const userId = req.currentUser?._id;
+  const post = Post.build({ text, user:userId });
   await post.save();
 
   res.status(201).json({ post });
@@ -19,9 +19,9 @@ export const updatePost = catchAsync(async (req: Request, res: Response) => {
   if (!post) {
     throw new BadRequestError("Post not found");
   }
-  const userId = req.currentUser?.id;
+  const userId = req.currentUser?._id;
 
-  if (userId != post?.userId) {
+  if (userId != post?.user.id) {
     throw new NotAuthorizedError();
   }
   // const existPost = await Post.findById(req.params.id);
@@ -42,9 +42,9 @@ export const deletePost = catchAsync(async (req: Request, res: Response) => {
   if (!post) {
     throw new BadRequestError("Post not found");
   }
-  const userId = req.currentUser?.id;
+  const userId = req.currentUser?._id;
 
-  if (userId == post?.userId || req.currentUser?.role === "admin") {
+  if (userId == post?.user._id || req.currentUser?.role === "admin") {
     post = await Post.findByIdAndDelete(req.params.id);
 
     res.status(201).json({ status: "success", post });
@@ -54,6 +54,6 @@ export const deletePost = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const getPosts = catchAsync(async (req: Request, res: Response) => {
-  const posts = await Post.find();
+  const posts = await Post.find().sort({ _id: -1 }).exec();
   res.status(200).json({ posts });
 });

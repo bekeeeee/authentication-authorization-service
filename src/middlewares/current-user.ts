@@ -4,7 +4,7 @@ import { NotAuthenticated } from "../errors/not-authenticated-error";
 import { catchAsync } from "../services/catchAsync";
 
 interface UserPayload {
-  id: string;
+  _id: string;
   username: string;
   role: string;
 }
@@ -26,7 +26,6 @@ export const currentUserMiddleware = catchAsync(
       req.session.jwt,
       process.env.JWT_SECRET!
     ) as UserPayload;
-
     req.currentUser = payload;
 
     next();

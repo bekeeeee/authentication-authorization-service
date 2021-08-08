@@ -14,8 +14,8 @@ router.post(
   [
     body("text")
       .trim()
-      .isLength({ min: 4, max: 20 })
-      .withMessage("Text must be between 4 an 20 characters"),
+      .isLength({ min: 4, max: 100 })
+      .withMessage("Text must be between 4 an 100 characters"),
   ],
   validateRequet,
   createPost
@@ -26,8 +26,8 @@ router.patch(
   [
     body("text")
       .trim()
-      .isLength({ min: 4, max: 20 })
-      .withMessage("Text must be between 4 an 20 characters"),
+      .isLength({ min: 4, max: 100 })
+      .withMessage("Text must be between 4 an 100 characters"),
   ],
   validateRequet,
   updatePost

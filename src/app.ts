@@ -49,7 +49,7 @@ app.use(
     secure: false,
   })
 );
-app.use("/api", limiter);
+// app.use("/api", limiter);
 
 // UserRouter
 app.use("/api/v1/user", userRouter);
