@@ -4,7 +4,7 @@
 
 # Description
 
-This project aims to build user authentication and authorization service, we require the following:
+This project aims to build user authentication and authorization service, That required the following:
 
 - service is responsible for authenticate and login users.
 - service is responsible for validating whether logged user is permitted to do specific action or not.
@@ -56,7 +56,7 @@ http://localhost:5000/api/v1/post
 
 The tests are written in Jest.
 
--Run tests files
+- Run tests files
 
 ```
 npm run test
