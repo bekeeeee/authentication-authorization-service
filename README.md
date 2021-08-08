@@ -1,66 +1,68 @@
-# Project Title
+# fatura-task-backend-Mohamed-Ragab
 
-A nice project with a nice description
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bekeeeee/fatura-task-backend-Mohamed-Ragab)
 
----
-## Requirements
+# Description
 
-For development, you will only need Node.js and a node global package, Yarn, installed in your environement.
+This project aims to build user authentication and authorization service, we require the following:
 
-### Node
-- #### Node installation on Windows
+- service is responsible for authenticate and login users.
+- service is responsible for validating whether logged user is permitted to do specific action or not.
+- service is resbonsible for loggin users out from the system
 
-  Just go on [official Node.js website](https://nodejs.org/) and download the installer.
-Also, be sure to have `git` available in your PATH, `npm` might need it (You can find git [here](https://git-scm.com/)).
+# Table of Contents
 
-- #### Node installation on Ubuntu
+- [Installation](#installation)
 
-  You can install nodejs and npm easily with apt install, just run the following commands.
+- [Getting started](#gettinStarted)
 
-      $ sudo apt install nodejs
-      $ sudo apt install npm
+- [Tests](#tests)
 
-- #### Other Operating Systems
-  You can find more information about the installation on the [official Node.js website](https://nodejs.org/) and the [official NPM website](https://npmjs.org/).
+- [License](#license)
 
-If the installation was successful, you should be able to run the following command.
+# Installation
 
-    $ node --version
-    v8.11.3
+The following necessary dependencies must be installed to run the application properly: nodejs and typescript
 
-    $ npm --version
-    6.1.0
+# Getting started
 
-If you need to update `npm`, you can make it using `npm`! Cool right? After running the following command, just open again the command line and be happy.
+- Clone the repository
 
-    $ npm install npm -g
+```
+git clone  https://github.com/bekeeeee/fatura-task-backend-Mohamed-Ragab
+```
 
-###
-### Yarn installation
-  After installing node, this project will need yarn too, so just run the following command.
+- Install dependencies
 
-      $ npm install -g yarn
+```
+npm install
+```
 
----
+- Build and run the project
 
-## Install
+```
+npm start
+```
 
-    $ git clone https://github.com/YOUR_USERNAME/PROJECT_TITLE
-    $ cd PROJECT_TITLE
-    $ yarn install
+Navigate to `http://localhost:5000`
 
-## Configure app
+- API Document endpoints
 
-Open `a/nice/path/to/a.file` then edit it with your settings. You will need:
+http://localhost:5000/api/v1/user
 
-- A setting;
-- Another setting;
-- One more setting;
+http://localhost:5000/api/v1/post
 
-## Running the project
+## Testing
 
-    $ yarn start
+The tests are written in Jest.
 
-## Simple build for production
+-Run tests files
 
-    $ yarn build
+```
+npm run test
+
+```
+
+# License
+
+This project is license under the MIT license.
