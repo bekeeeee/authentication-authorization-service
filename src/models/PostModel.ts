@@ -37,7 +37,7 @@ const postSchema = new mongoose.Schema({
     default: Date.now(),
   },
 });
-postSchema.pre("find", function (next) {
+postSchema.pre(/^find/, function (next) {
   console.log("populate");
   this.populate({
     path: "user",

@@ -7,9 +7,10 @@ dotenv.config({ path: __dirname + "/.env" });
 
 const start = async () => {
   const port = process.env.PORT || 3000;
+  const DB = process.env.DATABASE || "";
   try {
     await mongoose
-      .connect("mongodb://localhost:27017/fatura-backend", {
+      .connect(DB, {
         useNewUrlParser: true,
         useFindAndModify: true,
         useUnifiedTopology: true,
