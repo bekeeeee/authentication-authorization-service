@@ -38,7 +38,6 @@ const postSchema = new mongoose.Schema({
   },
 });
 postSchema.pre(/^find/, function (next) {
-  console.log("populate");
   this.populate({
     path: "user",
     select: "username _id",
