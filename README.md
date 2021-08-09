@@ -18,6 +18,8 @@ This project aims to build user authentication and authorization service, That r
 
 - [Tests](#tests)
 
+- [Updates](#updates)
+
 - [License](#license)
 
 # Installation
@@ -62,6 +64,10 @@ The tests are written in Jest.
 npm run test
 
 ```
+
+## Updates
+
+In the next version we implement forgot password, reset password and using nodemailer.
 
 # License
 
