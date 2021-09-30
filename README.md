@@ -1,4 +1,4 @@
-# fatura-task-backend-Mohamed-Ragab
+# authentication and authorization service
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bekeeeee/fatura-task-backend-Mohamed-Ragab)
 
